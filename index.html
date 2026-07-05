@@ -153,6 +153,21 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
 .btn[disabled]{opacity:.5;cursor:wait}
 .form.sent .field,.form.sent .btn{display:none}
 .form.sent .form-msg{font-family:var(--serif);font-style:italic;font-size:1.3rem;color:var(--gold);margin-top:0}
+
+.success-modal{position:fixed;inset:0;background:rgba(20,15,10,.65);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.success-modal.show{display:flex;animation:fadeIn .3s ease-out}
+.success-modal .box{background:var(--paper);max-width:420px;width:100%;padding:44px 32px 32px;text-align:center;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative;animation:slideUp .4s ease-out}
+.success-modal .check{width:72px;height:72px;border-radius:50%;background:#e8f5e9;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;position:relative}
+.success-modal .check svg{width:38px;height:38px;stroke:#2f7a3d;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:drawCheck .5s ease-out .2s forwards}
+.success-modal .check::before{content:"";position:absolute;inset:-8px;border:2px solid var(--gold);border-radius:50%;opacity:0;animation:ringPulse 1s ease-out .1s}
+.success-modal h3{font-family:var(--serif);font-size:1.8rem;font-weight:400;margin:0 0 12px;color:var(--ink);letter-spacing:.02em}
+.success-modal p{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--muted);margin:0 0 24px;line-height:1.6}
+.success-modal .close-btn{background:var(--ink);color:#fff;border:none;padding:11px 32px;font-family:var(--sans);font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;font-weight:400;transition:background .3s}
+.success-modal .close-btn:hover{background:var(--gold)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+@keyframes ringPulse{0%{opacity:.6;transform:scale(.9)}100%{opacity:0;transform:scale(1.3)}}
 </style>
 </head>
 <body>
@@ -460,12 +475,35 @@ form.addEventListener('submit', async (e) => {
     form.classList.add('sent');
     msg.textContent = 'Cảm ơn bạn đã xác nhận! Chúng mình rất mong được gặp bạn.';
     msg.className = 'form-msg ok';
+    document.getElementById('success-modal').classList.add('show');
+    document.body.style.overflow='hidden';
   } catch (err) {
     btn.disabled = false;
     msg.textContent = 'Gửi thất bại: ' + err.message;
     msg.className = 'form-msg err';
   }
 });
+</script>
+<div class="success-modal" id="success-modal" role="dialog" aria-modal="true">
+  <div class="box">
+    <div class="check">
+      <svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"></polyline></svg>
+    </div>
+    <h3>Gửi thành công</h3>
+    <p>Cảm ơn bạn đã xác nhận!<br>Chúng mình rất mong được gặp bạn trong ngày trọng đại.</p>
+    <button type="button" class="close-btn" id="success-close">Đóng</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const m=document.getElementById('success-modal');
+  const btn=document.getElementById('success-close');
+  function close(){m.classList.remove('show');document.body.style.overflow='';}
+  btn.addEventListener('click',close);
+  m.addEventListener('click',e=>{if(e.target===m)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&m.classList.contains('show'))close();});
+})();
 </script>
 </body>
 </html>
