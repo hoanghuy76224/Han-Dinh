@@ -6,12 +6,12 @@
 <title>Thiệp Cưới – Thiên Định &amp; Gia Hân</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#4a4a4a;--paper:#ffffff;--paper-2:#f7f7f5;
   --gold:#8c8c8c;--gold-soft:#b5b5b5;--line:#e2e2e0;--muted:#8a8a8a;
-  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',system-ui,sans-serif;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -146,6 +146,13 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
 .music-toggle:not(.playing) .icon-pause{display:none}
 .music-toggle.playing::after{content:"";position:absolute;inset:-6px;border:2px solid var(--gold);border-radius:50%;opacity:.6;animation:pulseRing 1.8s ease-out infinite}
 @keyframes pulseRing{0%{transform:scale(.9);opacity:.6}100%{transform:scale(1.25);opacity:0}}
+
+.form-msg{margin-top:1rem;font-size:.95rem;text-align:center;min-height:1.4em}
+.form-msg.ok{color:#2f7a3d}
+.form-msg.err{color:#a03030}
+.btn[disabled]{opacity:.5;cursor:wait}
+.form.sent .field,.form.sent .btn{display:none}
+.form.sent .form-msg{font-family:var(--serif);font-style:italic;font-size:1.3rem;color:var(--gold);margin-top:0}
 </style>
 </head>
 <body>
@@ -180,8 +187,8 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
       </svg>
       <div class="initials">D<span class="b">H</span></div>
     </div>
-    <p class="invite-line">Trân trọng kính mời bạn đến tham dự<br>tiệc cưới của chúng tôi</p>
-    <p class="occasion">Lễ Thành Hôn được tổ chức<br>vào lúc 18 giờ 00 phút</p>
+    <p class="invite-line">Trân trọng kính mời <span id="guest-name">bạn</span> đến tham dự<br>tiệc cưới của chúng tôi</p>
+    <p class="occasion">Lễ Thành Hôn được tổ chức<br>vào lúc 19 giờ 00 phút</p>
     <div class="dateblock">
       <div class="side">Tháng 08</div>
       <div class="day">28</div>
@@ -219,8 +226,8 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
       </div>
       <div class="ev">
         <div class="k">Lễ Thành Hôn</div>
-        <div class="time">18:00</div>
-        <div class="lunar">Đón khách 17:00 · Khai tiệc 18:00</div>
+        <div class="time">19:00</div>
+        <div class="lunar">Đón khách 18:00 · Khai tiệc 19:00</div>
         <div class="loc">Capella Gallery Hall</div>
         <div class="addr">Sảnh Mercier — Số 24 đường 3/2,<br>P. Hoà Hưng, TP.HCM</div>
       </div>
@@ -232,9 +239,9 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
   <div class="wrap">
     <p class="eyebrow">Reception Timeline</p>
     <div class="tl-grid">
-      <div class="tl-item"><div class="t">17:00</div><div class="rule"></div><div class="l">Đón khách</div></div>
-      <div class="tl-item"><div class="t">18:00</div><div class="rule"></div><div class="l">Khai tiệc</div></div>
-      <div class="tl-item"><div class="t">20:00</div><div class="rule"></div><div class="l">Chung vui</div></div>
+      <div class="tl-item"><div class="t">18:00</div><div class="rule"></div><div class="l">Đón khách</div></div>
+      <div class="tl-item"><div class="t">19:00</div><div class="rule"></div><div class="l">Khai tiệc</div></div>
+      <div class="tl-item"><div class="t">21:00</div><div class="rule"></div><div class="l">Chung vui</div></div>
     </div>
   </div>
 </section>
@@ -289,11 +296,9 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
     <h2 class="reveal">Xác nhận tham dự</h2>
     <div class="rule reveal"></div>
     <p class="lead reveal">Vui lòng cho chúng mình biết bạn có thể đến chung vui cùng ngày trọng đại hay không nhé. Chân thành cảm ơn!</p>
-    <form class="form reveal" action="https://formsubmit.co/dinh.nguyenthienhcm@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="RSVP Thiệp Cưới - Thiên Định & Gia Hân">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="#rsvp-done">
+    <form class="form reveal" id="rsvp-form" novalidate>
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="Khách được mời" id="rsvp-guest">
       <div class="field"><input type="text" name="Họ và tên" placeholder="Họ và tên" required></div>
       <div class="field"><input type="tel" name="Số điện thoại" placeholder="Số điện thoại"></div>
       <div class="field">
@@ -305,7 +310,8 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
       </div>
       <div class="field"><input type="number" name="Số khách" placeholder="Số khách (kể cả bạn)" min="1" value="1"></div>
       <div class="field"><textarea name="Lời nhắn" placeholder="Lời chúc / lời nhắn (nếu có)" rows="4"></textarea></div>
-      <button type="submit" class="btn">Gửi xác nhận</button>
+      <button type="submit" class="btn" id="rsvp-submit">Gửi xác nhận</button>
+      <div class="form-msg" id="rsvp-msg"></div>
     </form>
   </div>
 </section>
@@ -353,7 +359,7 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
 <script>
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-const target=new Date('2026-08-28T18:00:00+07:00').getTime();
+const target=new Date('2026-08-28T19:00:00+07:00').getTime();
 function tick(){
   const now=Date.now(),d=target-now;
   if(d<0){['cd-d','cd-h','cd-m','cd-s'].forEach(i=>document.getElementById(i).textContent='00');return}
@@ -409,6 +415,58 @@ function fallback(text,cb){
     window.addEventListener(ev,tryAutoStart,{once:true,passive:true});
   });
 })();
+</script>
+<script>
+(function(){
+  const to=new URLSearchParams(location.search).get('to');
+  if(!to)return;
+  const clean=to.trim().slice(0,80);
+  const el=document.getElementById('guest-name');
+  if(el)el.textContent=clean;
+  const h=document.getElementById('rsvp-guest');
+  if(h)h.value=clean;
+  document.title='Thân mời '+clean+' – Thiệp Cưới Thiên Định & Gia Hân';
+})();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { firebaseConfig, RSVP_COLLECTION } from "./firebase-config.js";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const form = document.getElementById('rsvp-form');
+const btn = document.getElementById('rsvp-submit');
+const msg = document.getElementById('rsvp-msg');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!form.checkValidity()) { form.reportValidity(); return; }
+
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+  if (data._gotcha) return; // honeypot
+  delete data._gotcha;
+
+  btn.disabled = true;
+  msg.textContent = 'Đang gửi...';
+  msg.className = 'form-msg';
+
+  try {
+    await addDoc(collection(db, RSVP_COLLECTION), {
+      ...data,
+      createdAt: serverTimestamp()
+    });
+    form.classList.add('sent');
+    msg.textContent = 'Cảm ơn bạn đã xác nhận! Chúng mình rất mong được gặp bạn.';
+    msg.className = 'form-msg ok';
+  } catch (err) {
+    btn.disabled = false;
+    msg.textContent = 'Gửi thất bại: ' + err.message;
+    msg.className = 'form-msg err';
+  }
+});
 </script>
 </body>
 </html>
