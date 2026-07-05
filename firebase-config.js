@@ -1,13 +1,10 @@
-// Firebase config - dán các giá trị anh copy từ Firebase Console vào đây
-// Xem SETUP.md để biết cách lấy các giá trị này
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCrVlD0T8Pcn51X_I8UWubne-A1pJjLvBg",
+  authDomain: "vo-iu-dino.firebaseapp.com",
+  projectId: "vo-iu-dino",
+  storageBucket: "vo-iu-dino.firebasestorage.app",
+  messagingSenderId: "626339714731",
+  appId: "1:626339714731:web:bdc7abbf7cb633304bc9ee"
 };
 
-// Tên collection lưu RSVP trong Firestore (không cần đổi)
 export const RSVP_COLLECTION = "rsvps";
