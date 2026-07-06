@@ -311,7 +311,7 @@ section{padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,6vw,5rem)}
     <h2 class="reveal">Xác nhận tham dự</h2>
     <div class="rule reveal"></div>
     <p class="lead reveal">Vui lòng cho chúng mình biết bạn có thể đến chung vui cùng ngày trọng đại hay không nhé. Chân thành cảm ơn!</p>
-    <form class="form reveal" id="rsvp-form" novalidate>
+    <form class="form reveal" id="rsvp-form" onsubmit="event.preventDefault();return false;" novalidate>
       <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
       <input type="hidden" name="Khách được mời" id="rsvp-guest">
       <div class="field"><input type="text" name="Họ và tên" placeholder="Họ và tên" required></div>
@@ -447,8 +447,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/fireba
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig, RSVP_COLLECTION } from "./firebase-config.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+let app, db;
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  console.log('[RSVP] Firebase initialized OK');
+} catch(err) {
+  console.error('[RSVP] Firebase init failed:', err);
+  document.getElementById('rsvp-msg').textContent = 'Lỗi cấu hình: ' + err.message;
+  document.getElementById('rsvp-msg').className = 'form-msg err';
+}
 
 const form = document.getElementById('rsvp-form');
 const btn = document.getElementById('rsvp-submit');
